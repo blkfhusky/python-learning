@@ -45,7 +45,7 @@ printme(age=12, str="kk")
 
 def printinfo(arg1, *args):
     print("arg1:", arg1)
-    """*表示未命名的所有可变参数"""
+    """ *表示未命名的所有可变参数 """
     print("length of args:", len(args))
     print("============")
     for arg in args:
