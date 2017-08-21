@@ -7,6 +7,7 @@ import time
 import calendar
 import sys
 import my_func as mf
+from my_func import area_of_cycle
 # print(time.time())
 
 # t = time.asctime(time.localtime(time.time()))
@@ -20,4 +21,5 @@ import my_func as mf
 print("iiiiiii")
 
 # print(sys.path)
+print(area_of_cycle(11))
 print(mf.area_of_cycle(11))
