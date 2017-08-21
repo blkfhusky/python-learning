@@ -50,7 +50,12 @@ def printinfo(arg1, *args):
     print("============")
     for arg in args:
         print(arg, end=", ")  # 打印不换行,end内容自定义
+    print()
     return
 
 
 printinfo("hello", 18, "kk", [19, 78, "hfdhj"])
+
+# lambda表达式
+mysum = lambda arg1, arg2: arg1 + arg2
+print("sum", mysum(18, 19))
