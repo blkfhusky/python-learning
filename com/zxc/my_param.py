@@ -59,3 +59,16 @@ printinfo("hello", 18, "kk", [19, 78, "hfdhj"])
 # lambda表达式
 mysum = lambda arg1, arg2: arg1 + arg2
 print("sum", mysum(18, 19))
+
+# 全局变量
+money = 0
+
+
+def changeMoney(mount):
+    global money
+    money = mount
+    print("全局money：", money)
+    print(dir(__name__))
+    print(globals())
+
+changeMoney(8)
