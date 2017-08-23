@@ -22,6 +22,7 @@ except:
 agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'
 headers = {
     "Host": "www.zhihu.com",
+    "Origin": "https://www.zhihu.com",
     "Referer": "https://www.zhihu.com/",
     'User-Agent': agent
 }
@@ -36,7 +37,7 @@ except:
 
 
 def get_xsrf():
-    '''_xsrf 是一个动态变化的参数'''
+    """_xsrf 是一个动态变化的参数"""
     index_url = 'https://www.zhihu.com/#signin'
     # 获取登录时需要用到的_xsrf
     index_page = session.get(index_url, headers=headers)
@@ -45,7 +46,7 @@ def get_xsrf():
     pattern = r'name="_xsrf"'
     # 这里的_xsrf 返回的是一个list
     _xsrf = re.findall(pattern, html)
-    return _xsrf[0]
+    return _xsrf if _xsrf else None
 
 
 # 获取验证码
@@ -70,6 +71,7 @@ def get_captcha():
 
 def isLogin():
     # 通过查看用户个人信息来判断是否已经登录
+    """这种判断方式有问题，弃用"""
     url = "https://www.zhihu.com/settings/profile"
     login_code = session.get(url, headers=headers, allow_redirects=False).status_code
     if login_code == 200:
@@ -80,6 +82,9 @@ def isLogin():
 
 def login(secret, account):
     _xsrf = get_xsrf()
+    if not _xsrf:
+        print("您已登录，尝试登出后登录")
+        logout()
     headers["X-Xsrftoken"] = _xsrf
     headers["X-Requested-With"] = "XMLHttpRequest"
     # 通过输入的用户名判断是否是手机号
@@ -123,12 +128,19 @@ try:
 except:
     pass
 
-if __name__ == '__main__':
-    if isLogin():
-        print('您已经登录')
+def logout():
+    url = "https://www.zhihu.com/logout"
+    re = requests.patch(url)
+    if re.status_code == 200:
+        print("登出成功")
     else:
-        # account = input('请输入你的用户名\n>  ')
-        # secret = input("请输入你的密码\n>  ")
-        account = "819578393@qq.com"
-        secret = "xurixuri"
-        login(secret, account)
+        print("登出失败")
+
+
+
+if __name__ == '__main__':
+    # account = input('请输入你的用户名\n>  ')
+    # secret = input("请输入你的密码\n>  ")
+    account = "819578393@qq.com"
+    secret = "xurixuri"
+    login(secret, account)
