@@ -48,6 +48,11 @@ def get_xsrf():
     _xsrf = re.findall(pattern, html)
     return _xsrf if _xsrf else None
 
+def get_xsrf_with_html(html):
+    pattern = r'name="_xsrf"'
+    # 这里的_xsrf 返回的是一个list
+    _xsrf = re.findall(pattern, html)
+    return _xsrf if _xsrf else None
 
 # 获取验证码
 def get_captcha():
@@ -84,7 +89,9 @@ def login(secret, account):
     _xsrf = get_xsrf()
     if not _xsrf:
         print("您已登录，尝试登出后登录")
-        logout()
+        html = logout();
+        if html:
+            _xsrf = get_xsrf_with_html(html)
     headers["X-Xsrftoken"] = _xsrf
     headers["X-Requested-With"] = "XMLHttpRequest"
     # 通过输入的用户名判断是否是手机号
@@ -131,10 +138,12 @@ except:
 def logout():
     url = "https://www.zhihu.com/logout"
     re = requests.patch(url)
-    if re.status_code == 200:
+    if re.status_code == 302:
         print("登出成功")
+        return re.text
     else:
         print("登出失败")
+        return None
 
 
 
