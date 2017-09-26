@@ -26,7 +26,10 @@
 # while n > 0:
 #     sum = sum + n
 #     n = n - 2
-# # print(sum)
+
+
+
+
 #
 # d = {s: "1"}
 # s = 9
@@ -40,4 +43,9 @@
 # # print(d)
 
 s = b"\xe6\xb3\xa8\xe5\x86\x8c\xe6\x88\x96\xe7\x99\xbb\xe5\xbd\x95".decode("utf-8")
-print(s)
+# print(s)
+
+
+urls = ['aaa{}djfdk'.format(str(i)) for i in range(0, 100, 20)]
+for url in urls:
+    print(url)
